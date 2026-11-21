@@ -1596,6 +1596,7 @@ const ROWS = [
 ["btn_double","Dobrar bilheteria: +{c} (vídeo)","Double gate: +{c} (video)","Duplicar taquilla: +{c} (video)","Doubler la billetterie : +{c} (vidéo)"],
 ["btn_help","Como jogar","How to play","Cómo jugar","Comment jouer"],
 ["btn_legal","Direitos autorais","Copyright","Derechos de autor","Droits d'auteur"],
+["btn_priv","Privacidade","Privacy","Privacidad","Confidentialité"],
 ["btn_home","Tela inicial","Home screen","Pantalla inicial","Écran d'accueil"],
 ["btn_reset","Apagar progresso","Erase progress","Borrar progreso","Effacer la progression"],
 ["btn_cancel","Cancelar","Cancel","Cancelar","Annuler"],
@@ -2922,7 +2923,7 @@ function renderMenu() {
   const sw = (on, a) => `<button class="sw ${on ? 'on' : ''}" data-a="${a}" aria-pressed="${on ? 'true' : 'false'}"><i></i></button>`;
   return pghead(t('eb_menu'), t('btn_menu')) + `<div class="card set"><h3>${t('lbl_lang')}</h3><div class="lgrid">${LANGS.map(l => `<button class="lg ${S.lang === l ? 'on' : ''}" data-a="lang" data-l="${l}"><span class="fl">${FLAG[l]}</span><b>${LN[l][0]}</b><small>${LN[l][1]}</small></button>`).join('')}</div></div>
   <div class="card set"><div class="srow"><span>🔊 ${t('lbl_sfx')}</span>${sw(S.sfx, 'tsfx')}</div><div class="srow"><span>🎵 ${t('lbl_music')}</span>${sw(S.music, 'tmusic')}</div></div>
-  <div class="mgrid"><button class="mb" data-a="estilo">👕<span>${t('sp_btn')}</span></button><button class="mb" data-a="duelo">⚔️<span>${t('du_btn')}</span></button><button class="mb" data-a="album">🃏<span>${t('al_btn')}</span></button><button class="mb" data-a="metas">🏅<span>${t('mt_title')}</span></button><button class="mb" data-a="help">❓<span>${t('btn_help')}</span></button><button class="mb" data-a="intro">🎬<span>${t('btn_intro')}</span></button><button class="mb" data-a="legal">⚖️<span>${t('btn_legal')}</span></button><button class="mb" data-a="home">🏠<span>${t('btn_home')}</span></button><button class="mb danger" data-a="reset">🗑<span>${t('btn_reset')}</span></button></div>
+  <div class="mgrid"><button class="mb" data-a="estilo">👕<span>${t('sp_btn')}</span></button><button class="mb" data-a="duelo">⚔️<span>${t('du_btn')}</span></button><button class="mb" data-a="album">🃏<span>${t('al_btn')}</span></button><button class="mb" data-a="metas">🏅<span>${t('mt_title')}</span></button><button class="mb" data-a="help">❓<span>${t('btn_help')}</span></button><button class="mb" data-a="intro">🎬<span>${t('btn_intro')}</span></button><button class="mb" data-a="legal">⚖️<span>${t('btn_legal')}</span></button><button class="mb" data-a="priv">🔒<span>${t('btn_priv')}</span></button><button class="mb" data-a="home">🏠<span>${t('btn_home')}</span></button><button class="mb danger" data-a="reset">🗑<span>${t('btn_reset')}</span></button></div>
   <p class="fine">${t('app_title')} · ${t('cur_name')}: ${CONFIG.symbol}</p>`;
 }
 
@@ -3211,7 +3212,7 @@ const ACT = {
     UI.introScreen = 'home';   // a música toca até sair da tela inicial; quem tem save continua pelo botão ▶ Continuar
     if (UI.screen !== 'home') show('home');
   },
-  help() { helpModal(); }, legal() { legalModal(); }, close() { closeModal(); },
+  help() { helpModal(); }, legal() { legalModal(); }, priv() { window.open('privacidade.html', '_blank', 'noopener'); }, close() { closeModal(); },
   reset() { modal(`<h2>🗑 ${t('btn_reset')}</h2><p>${t('reset_q')}</p><button class="btn danger" data-a="reset_ok">${t('btn_reset')}</button><button class="btn ghost" data-a="close">${t('btn_cancel')}</button>`); },
   reset_ok() { try { localStorage.removeItem(CONFIG.saveKey); } catch (e) { } G = null; closeModal(); show('home'); }
 };
@@ -3913,7 +3914,7 @@ const GA_ID = 'G-3S4Z3Y3P62';
     if (!/^https?:$/.test(location.protocol) || /^(localhost|127\.|0\.0\.0\.0|\[::1\])/.test(h) || /claude\.(ai|com)$/.test(h) || /\.claudeusercontent\.com$/.test(h)) return;
     window.dataLayer = window.dataLayer || []; window.gtag = function () { window.dataLayer.push(arguments); };
     const s = document.createElement('script'); s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID; document.head.appendChild(s);
-    gtag('js', new Date()); gtag('config', GA_ID);
+    gtag('js', new Date()); gtag('config', GA_ID, { anonymize_ip: true, allow_google_signals: false, allow_ad_personalization_signals: false, page_location: location.origin + location.pathname, page_referrer: '' });
   } catch (x) { }
 })();
 function gaEv(n, p) { try { if (window.gtag) window.gtag('event', n, p || {}); } catch (x) { } }
